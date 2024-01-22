@@ -1,3 +1,4 @@
+local pressed = false
 local animTime = 0
 
 local function InOutSine(t, t0, tp, x0, xp)--正弦波
@@ -5,11 +6,21 @@ local function InOutSine(t, t0, tp, x0, xp)--正弦波
     return x
 end
 
+RegisterCommand('+showvoicerange', function()
+	pressed = true
+end, false)
+
+RegisterCommand('-showvoicerange', function()
+    pressed = false
+end, false)
+
+RegisterKeyMapping('+showvoicerange', 'Show voice range', 'keyboard', 'OEM_4')
+
 CreateThread(function()
     while true do
         coords = GetEntityCoords(PlayerPedId())
         voice = LocalPlayer.state['proximity'].distance
-        if IsControlPressed(0, 21) then
+        if pressed then
             if animTime < 150 then
                 animTime = animTime + 5
             end
