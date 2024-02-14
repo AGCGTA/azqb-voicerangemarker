@@ -18,8 +18,6 @@ RegisterKeyMapping('+showvoicerange', 'Show voice range', 'keyboard', 'OEM_4')
 
 CreateThread(function()
     while true do
-        coords = GetEntityCoords(PlayerPedId())
-        voice = LocalPlayer.state['proximity'].distance
         if pressed then
             if animTime < 150 then
                 animTime = animTime + 5
@@ -29,8 +27,15 @@ CreateThread(function()
                 animTime = animTime - 1
             end
         end
-        alpha = math.floor(InOutSine(animTime, 0, 150, 0, 180))
-        DrawMarker(1, coords.x, coords.y, coords.z - 0.5, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, voice, voice, 2.0, 255, 139, 99, alpha, false, true, 2, nil, nil, false)
+        if animTime == 0 then
+            Wait(250)
+        else
+            coords = GetEntityCoords(PlayerPedId())
+            voice = LocalPlayer.state['proximity'].distance
+
+            alpha = math.floor(InOutSine(animTime, 0, 150, 0, 180))
+            DrawMarker(1, coords.x, coords.y, coords.z - 0.5, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, voice, voice, 2.0, 255, 139, 99, alpha, false, true, 2, nil, nil, false)
+        end
         Wait(0)
     end
 end)
